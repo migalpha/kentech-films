@@ -25,6 +25,7 @@ type DeleteFilmHandler struct {
 // @Failure 500 {object} errorResponse "error 500"
 // @Router /films/{film_id} [delete]
 func (handler DeleteFilmHandler) ServeHTTP(ctx *gin.Context) {
+	reqctx := ctx.Request.Context()
 	ID := ctx.Param("id")
 
 	userID, err := getUserIDFromRequest(ctx)
@@ -39,7 +40,7 @@ func (handler DeleteFilmHandler) ServeHTTP(ctx *gin.Context) {
 		return
 	}
 
-	filmFromDB, err := handler.Provider.FilmbyID(filmID)
+	filmFromDB, err := handler.Provider.FilmbyID(reqctx, filmID)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -50,7 +51,7 @@ func (handler DeleteFilmHandler) ServeHTTP(ctx *gin.Context) {
 		return
 	}
 
-	err = handler.Destroyer.Destroy(filmID)
+	err = handler.Destroyer.Destroy(reqctx, filmID)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

@@ -1,6 +1,7 @@
 package postgres
 
 import (
+	"context"
 	"fmt"
 	"log"
 
@@ -13,7 +14,10 @@ type FilmRepo struct {
 	DB *gorm.DB
 }
 
-func (repo FilmRepo) Save(data film.Film) (film.FilmID, error) {
+func NewFilmRepository(db *gorm.DB) *FilmRepo {
+	return &FilmRepo{DB: db}
+}
+func (repo FilmRepo) Save(ctx context.Context, data film.Film) (film.FilmID, error) {
 	filmData := encodeFilm(data)
 	result := repo.DB.Create(&filmData)
 	if result.Error != nil {
@@ -22,12 +26,12 @@ func (repo FilmRepo) Save(data film.Film) (film.FilmID, error) {
 	return film.FilmID(filmData.ID), nil
 }
 
-func (repo FilmRepo) Destroy(ID film.FilmID) error {
+func (repo FilmRepo) Destroy(ctx context.Context, ID film.FilmID) error {
 	resp := repo.DB.Delete(&PostgresFilm{}, ID.Uint())
 	return resp.Error
 }
 
-func (repo FilmRepo) FilmbyID(ID film.FilmID) (film.Film, error) {
+func (repo FilmRepo) FilmbyID(ctx context.Context, ID film.FilmID) (film.Film, error) {
 	data := PostgresFilm{
 		ID: ID.Uint(),
 	}
@@ -43,7 +47,7 @@ func (repo FilmRepo) FilmbyID(ID film.FilmID) (film.Film, error) {
 	return filmDB, nil
 }
 
-func (repo FilmRepo) GetFilms(filter map[string]interface{}) (film.Films, error) {
+func (repo FilmRepo) GetFilms(ctx context.Context, filter map[string]interface{}) (film.Films, error) {
 	var filmsDB []PostgresFilm
 
 	res := repo.DB.Where(filter).Find(&filmsDB)
@@ -64,7 +68,7 @@ func (repo FilmRepo) GetFilms(filter map[string]interface{}) (film.Films, error)
 	return films, nil
 }
 
-func (repo FilmRepo) Update(data film.Film) error {
+func (repo FilmRepo) Update(ctx context.Context, data film.Film) error {
 	fmt.Printf("%+v", data)
 	res := repo.DB.Model(&PostgresFilm{}).Where("id = ?", data.ID).Updates(encodeFilm(data))
 	return res.Error

@@ -45,6 +45,7 @@ type CreateFilmHandler struct {
 // @Failure 500 {object} errorResponse "error 500"
 // @Router /films [post]
 func (handler CreateFilmHandler) ServeHTTP(ctx *gin.Context) {
+	reqctx := ctx.Request.Context()
 	body := createFilmRequest{}
 	if err := ctx.ShouldBindJSON(&body); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -57,7 +58,7 @@ func (handler CreateFilmHandler) ServeHTTP(ctx *gin.Context) {
 		return
 	}
 
-	filmID, err := handler.Repo.Save(film.Film{
+	filmID, err := handler.Repo.Save(reqctx, film.Film{
 		Starring:    body.Starring,
 		Director:    body.Director,
 		Genre:       body.Genre,

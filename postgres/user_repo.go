@@ -1,6 +1,7 @@
 package postgres
 
 import (
+	"context"
 	"fmt"
 	"time"
 
@@ -13,7 +14,11 @@ type UsersRepo struct {
 	DB *gorm.DB
 }
 
-func (repo UsersRepo) UserbyUsername(id film.Username) (film.User, error) {
+func NewUserRepository(db *gorm.DB) *UsersRepo {
+	return &UsersRepo{DB: db}
+}
+
+func (repo UsersRepo) UserbyUsername(ctx context.Context, id film.Username) (film.User, error) {
 	data := PostgresUser{
 		Username: id.String(),
 	}
@@ -27,7 +32,7 @@ func (repo UsersRepo) UserbyUsername(id film.Username) (film.User, error) {
 	return user, nil
 }
 
-func (repo UsersRepo) UserByID(id film.UserID) (film.User, error) {
+func (repo UsersRepo) UserByID(ctx context.Context, id film.UserID) (film.User, error) {
 	data := PostgresUser{
 		ID: id.Uint(),
 	}
@@ -41,7 +46,7 @@ func (repo UsersRepo) UserByID(id film.UserID) (film.User, error) {
 	return user, nil
 }
 
-func (repo UsersRepo) Save(user film.User) (film.UserID, error) {
+func (repo UsersRepo) Save(ctx context.Context, user film.User) (film.UserID, error) {
 	data := encodeUser(user)
 	result := repo.DB.Create(&data)
 	if result.Error != nil {

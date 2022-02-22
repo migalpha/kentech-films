@@ -35,6 +35,7 @@ type AddFavouriteHandler struct {
 // @Failure 500 {object} errorResponse "error 500"
 // @Router /favourites [post]
 func (handler AddFavouriteHandler) ServeHTTP(ctx *gin.Context) {
+	reqctx := ctx.Request.Context()
 	body := addFavouriteRequest{}
 	if err := ctx.ShouldBindJSON(&body); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -49,13 +50,13 @@ func (handler AddFavouriteHandler) ServeHTTP(ctx *gin.Context) {
 
 	filmID := film.FilmID(body.FilmID)
 
-	_, err = handler.Provider.FilmbyID(filmID)
+	_, err = handler.Provider.FilmbyID(reqctx, filmID)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	favouriteID, err := handler.Saver.Save(film.Favourite{
+	favouriteID, err := handler.Saver.Save(reqctx, film.Favourite{
 		FilmID: filmID,
 		UserID: film.UserID(userID),
 	})

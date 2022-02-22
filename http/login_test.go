@@ -25,7 +25,7 @@ func Test_LoginHandler_ServeHTTP(t *testing.T) {
 
 	t.Run("Happy path", func(t *testing.T) {
 		mockProvider := mocks.UserProvider{}
-		mockProvider.On("UserbyUsername", mock.Anything).Return(user, nil)
+		mockProvider.On("UserbyUsername", mock.Anything, mock.Anything).Return(user, nil)
 		handler := LoginHandler{Repo: &mockProvider}
 
 		url := "/register"

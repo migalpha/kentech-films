@@ -1,0 +1,51 @@
+version: '3'
+services:
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile.tests
+    volumes:
+      - ${MY_WORKSPACE}:/ws
+    working_dir: /ws${WORKSPACE_PATH:-/}
+    environment:
+      GOCACHE: /ws${WORKSPACE_PATH:-/temp}
+    command: "bash ./test/test.sh"
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      JWT_SECRET: secret
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: docker
+      POSTGRES_PASS: docker
+      POSTGRES_DBNAME: kentech
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      SERVER_ADDRESS: :8000
+    depends_on:
+      - redis
+      - postgres
+    ports:
+      - "8000:8000"
+    command: >
+      sh -c "
+        sleep 5
+        migrate -source file://postgres/migrations -database postgres://docker:docker@postgres:5432/kentech?sslmode=disable up
+        /app/kentech-films
+      "
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: docker
+      POSTGRES_USER: docker
+      POSTGRES_DB: kentech
+    ports:
+      - "5432:5432"

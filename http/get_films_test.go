@@ -40,7 +40,7 @@ func Test_GetFilmHandler_ServeHTTP(t *testing.T) {
 
 	t.Run("Happy path", func(t *testing.T) {
 		mockProvider := mocks.FilmProvider{}
-		mockProvider.On("GetFilms", mock.Anything).Return(filmMock, nil)
+		mockProvider.On("GetFilms", mock.Anything, mock.Anything).Return(filmMock, nil)
 		handler := GetFilmsHandler{Repo: &mockProvider}
 
 		url := "/films"

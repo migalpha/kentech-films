@@ -3,6 +3,8 @@
 package mocks
 
 import (
+	context "context"
+
 	film "github.com/migalpha/kentech-films"
 	mock "github.com/stretchr/testify/mock"
 )
@@ -12,20 +14,20 @@ type UserProvider struct {
 	mock.Mock
 }
 
-// UserByID provides a mock function with given fields: _a0
-func (_m *UserProvider) UserByID(_a0 film.UserID) (film.User, error) {
-	ret := _m.Called(_a0)
+// UserByID provides a mock function with given fields: _a0, _a1
+func (_m *UserProvider) UserByID(_a0 context.Context, _a1 film.UserID) (film.User, error) {
+	ret := _m.Called(_a0, _a1)
 
 	var r0 film.User
-	if rf, ok := ret.Get(0).(func(film.UserID) film.User); ok {
-		r0 = rf(_a0)
+	if rf, ok := ret.Get(0).(func(context.Context, film.UserID) film.User); ok {
+		r0 = rf(_a0, _a1)
 	} else {
 		r0 = ret.Get(0).(film.User)
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(film.UserID) error); ok {
-		r1 = rf(_a0)
+	if rf, ok := ret.Get(1).(func(context.Context, film.UserID) error); ok {
+		r1 = rf(_a0, _a1)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -33,20 +35,20 @@ func (_m *UserProvider) UserByID(_a0 film.UserID) (film.User, error) {
 	return r0, r1
 }
 
-// UserbyUsername provides a mock function with given fields: _a0
-func (_m *UserProvider) UserbyUsername(_a0 film.Username) (film.User, error) {
-	ret := _m.Called(_a0)
+// UserbyUsername provides a mock function with given fields: _a0, _a1
+func (_m *UserProvider) UserbyUsername(_a0 context.Context, _a1 film.Username) (film.User, error) {
+	ret := _m.Called(_a0, _a1)
 
 	var r0 film.User
-	if rf, ok := ret.Get(0).(func(film.Username) film.User); ok {
-		r0 = rf(_a0)
+	if rf, ok := ret.Get(0).(func(context.Context, film.Username) film.User); ok {
+		r0 = rf(_a0, _a1)
 	} else {
 		r0 = ret.Get(0).(film.User)
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(film.Username) error); ok {
-		r1 = rf(_a0)
+	if rf, ok := ret.Get(1).(func(context.Context, film.Username) error); ok {
+		r1 = rf(_a0, _a1)
 	} else {
 		r1 = ret.Error(1)
 	}

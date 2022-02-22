@@ -20,7 +20,7 @@ func Test_RegisterUserHandler_ServeHTTP(t *testing.T) {
 
 	t.Run("Happy path", func(t *testing.T) {
 		mockSaver := mocks.UserSaver{}
-		mockSaver.On("Save", mock.Anything).Return(user.ID, nil)
+		mockSaver.On("Save", mock.Anything, mock.Anything).Return(user.ID, nil)
 		handler := RegisterUserHandler{Repo: &mockSaver}
 
 		url := "/register"

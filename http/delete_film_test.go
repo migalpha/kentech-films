@@ -26,9 +26,9 @@ func Test_DeleteFilmHandler_ServeHTTP(t *testing.T) {
 
 	t.Run("Happy path", func(t *testing.T) {
 		mockProvider := mocks.FilmProvider{}
-		mockProvider.On("FilmbyID", mock.Anything).Return(filmMock, nil)
+		mockProvider.On("FilmbyID", mock.Anything, mock.Anything).Return(filmMock, nil)
 		mockDestroyer := mocks.FilmDestroyer{}
-		mockDestroyer.On("Destroy", mock.Anything).Return(nil)
+		mockDestroyer.On("Destroy", mock.Anything, mock.Anything).Return(nil)
 		handler := DeleteFilmHandler{Provider: &mockProvider, Destroyer: &mockDestroyer}
 
 		url := "/films/:id"

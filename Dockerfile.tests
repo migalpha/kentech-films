@@ -1,0 +1,18 @@
+FROM golang:1.16.8-alpine3.14
+
+ENV GO111MODULE=on
+
+RUN apk update && apk upgrade && apk --no-cache add git openssh openssh-client build-base bash
+
+RUN mkdir -p $HOME/go-workspace
+ENV GOPATH=$HOME/go-workspace
+
+RUN go clean --modcache
+ADD . /ws
+WORKDIR /ws
+COPY go.mod .
+COPY go.sum .
+
+RUN go mod download
+
+RUN chmod -R 777 $GOPATH/pkg

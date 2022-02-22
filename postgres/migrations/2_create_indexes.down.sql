@@ -1,0 +1,1 @@
+DROP INDEX IF EXISTS favourites_unique_film_id_user_id_idx;

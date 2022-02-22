@@ -36,13 +36,14 @@ type loginResponse struct {
 // @Failure 500 {object} errorResponse "error 500"
 // @Router /login [post]
 func (handler LoginHandler) ServeHTTP(ctx *gin.Context) {
+	reqctx := ctx.Request.Context()
 	body := loginRequest{}
 	if err := ctx.ShouldBindJSON(&body); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	user, err := handler.Repo.UserbyUsername(film.Username(body.Username))
+	user, err := handler.Repo.UserbyUsername(reqctx, film.Username(body.Username))
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

@@ -20,7 +20,7 @@ func Test_CreateFilmHandler_ServeHTTP(t *testing.T) {
 
 	t.Run("Happy path", func(t *testing.T) {
 		mockSaver := mocks.FilmSaver{}
-		mockSaver.On("Save", mock.Anything).Return(mockFilm.ID, nil)
+		mockSaver.On("Save", mock.Anything, mock.Anything).Return(mockFilm.ID, nil)
 		handler := CreateFilmHandler{Repo: &mockSaver}
 
 		url := "/films"

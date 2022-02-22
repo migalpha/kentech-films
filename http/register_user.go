@@ -46,6 +46,7 @@ type RegisterUserHandler struct {
 // @Failure 500 {object} errorResponse "error 500"
 // @Router /register [post]
 func (handler RegisterUserHandler) ServeHTTP(ctx *gin.Context) {
+	reqctx := ctx.Request.Context()
 	body := registerUserRequest{}
 	if err := ctx.ShouldBindJSON(&body); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -63,7 +64,7 @@ func (handler RegisterUserHandler) ServeHTTP(ctx *gin.Context) {
 	}
 
 	now := time.Now()
-	userID, err := handler.Repo.Save(film.User{
+	userID, err := handler.Repo.Save(reqctx, film.User{
 		Username:  film.Username(body.Username),
 		Password:  hashPassword,
 		IsActive:  true,

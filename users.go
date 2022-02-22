@@ -1,6 +1,9 @@
 package film
 
-import "time"
+import (
+	"context"
+	"time"
+)
 
 type User struct {
 	ID        UserID    `json:"id"`
@@ -23,11 +26,11 @@ func (id UserID) Uint() uint {
 
 //go:generate mockery --name UserProvider
 type UserProvider interface {
-	UserbyUsername(Username) (User, error)
-	UserByID(UserID) (User, error)
+	UserbyUsername(context.Context, Username) (User, error)
+	UserByID(context.Context, UserID) (User, error)
 }
 
 //go:generate mockery --name UserSaver
 type UserSaver interface {
-	Save(User) (UserID, error)
+	Save(context.Context, User) (UserID, error)
 }

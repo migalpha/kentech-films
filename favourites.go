@@ -1,5 +1,7 @@
 package film
 
+import "context"
+
 type Favourite struct {
 	ID     FavouriteID `json:"id"`
 	FilmID FilmID      `json:"film_id"`
@@ -14,10 +16,10 @@ func (id FavouriteID) Uint() uint {
 
 //go:generate mockery --name FavouriteSaver
 type FavouriteSaver interface {
-	Save(Favourite) (FavouriteID, error)
+	Save(context.Context, Favourite) (FavouriteID, error)
 }
 
 //go:generate mockery --name FavouriteDestroyer
 type FavouriteDestroyer interface {
-	Destroy(FilmID, UserID) error
+	Destroy(context.Context, FilmID, UserID) error
 }

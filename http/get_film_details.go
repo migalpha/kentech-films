@@ -25,6 +25,7 @@ type GetFilmDetailsHandler struct {
 // @Failure 500 {object} errorResponse "error 500"
 // @Router /films/{film_id} [get]
 func (handler GetFilmDetailsHandler) ServeHTTP(ctx *gin.Context) {
+	reqctx := ctx.Request.Context()
 	ID := ctx.Param("id")
 
 	filmID, err := film.NewFilmID(ID)
@@ -33,7 +34,7 @@ func (handler GetFilmDetailsHandler) ServeHTTP(ctx *gin.Context) {
 		return
 	}
 
-	filmDB, err := handler.Repo.FilmbyID(filmID)
+	filmDB, err := handler.Repo.FilmbyID(reqctx, filmID)
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return

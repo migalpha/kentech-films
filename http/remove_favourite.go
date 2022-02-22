@@ -7,7 +7,7 @@ import (
 	film "github.com/migalpha/kentech-films"
 )
 
-type RemoveFavoriteHandler struct {
+type RemoveFavouriteHandler struct {
 	Provider  film.FilmProvider
 	Destroyer film.FavouriteDestroyer
 }
@@ -24,7 +24,8 @@ type RemoveFavoriteHandler struct {
 // @Failure 400 {object} errorResponse "error 400"
 // @Failure 500 {object} errorResponse "error 500"
 // @Router /favourites/{film_id} [delete]
-func (handler RemoveFavoriteHandler) ServeHTTP(ctx *gin.Context) {
+func (handler RemoveFavouriteHandler) ServeHTTP(ctx *gin.Context) {
+	reqctx := ctx.Request.Context()
 	ID := ctx.Param("id")
 
 	userID, err := getUserIDFromRequest(ctx)
@@ -39,7 +40,7 @@ func (handler RemoveFavoriteHandler) ServeHTTP(ctx *gin.Context) {
 		return
 	}
 
-	filmFromDB, err := handler.Provider.FilmbyID(filmID)
+	filmFromDB, err := handler.Provider.FilmbyID(reqctx, filmID)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -50,7 +51,7 @@ func (handler RemoveFavoriteHandler) ServeHTTP(ctx *gin.Context) {
 		return
 	}
 
-	err = handler.Destroyer.Destroy(filmID, film.UserID(userID))
+	err = handler.Destroyer.Destroy(reqctx, filmID, film.UserID(userID))
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

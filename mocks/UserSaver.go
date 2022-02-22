@@ -3,6 +3,8 @@
 package mocks
 
 import (
+	context "context"
+
 	film "github.com/migalpha/kentech-films"
 	mock "github.com/stretchr/testify/mock"
 )
@@ -12,20 +14,20 @@ type UserSaver struct {
 	mock.Mock
 }
 
-// Save provides a mock function with given fields: _a0
-func (_m *UserSaver) Save(_a0 film.User) (film.UserID, error) {
-	ret := _m.Called(_a0)
+// Save provides a mock function with given fields: _a0, _a1
+func (_m *UserSaver) Save(_a0 context.Context, _a1 film.User) (film.UserID, error) {
+	ret := _m.Called(_a0, _a1)
 
 	var r0 film.UserID
-	if rf, ok := ret.Get(0).(func(film.User) film.UserID); ok {
-		r0 = rf(_a0)
+	if rf, ok := ret.Get(0).(func(context.Context, film.User) film.UserID); ok {
+		r0 = rf(_a0, _a1)
 	} else {
 		r0 = ret.Get(0).(film.UserID)
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(film.User) error); ok {
-		r1 = rf(_a0)
+	if rf, ok := ret.Get(1).(func(context.Context, film.User) error); ok {
+		r1 = rf(_a0, _a1)
 	} else {
 		r1 = ret.Error(1)
 	}

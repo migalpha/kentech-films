@@ -3,6 +3,8 @@
 package mocks
 
 import (
+	context "context"
+
 	film "github.com/migalpha/kentech-films"
 	mock "github.com/stretchr/testify/mock"
 )
@@ -12,20 +14,20 @@ type FilmSaver struct {
 	mock.Mock
 }
 
-// Save provides a mock function with given fields: _a0
-func (_m *FilmSaver) Save(_a0 film.Film) (film.FilmID, error) {
-	ret := _m.Called(_a0)
+// Save provides a mock function with given fields: _a0, _a1
+func (_m *FilmSaver) Save(_a0 context.Context, _a1 film.Film) (film.FilmID, error) {
+	ret := _m.Called(_a0, _a1)
 
 	var r0 film.FilmID
-	if rf, ok := ret.Get(0).(func(film.Film) film.FilmID); ok {
-		r0 = rf(_a0)
+	if rf, ok := ret.Get(0).(func(context.Context, film.Film) film.FilmID); ok {
+		r0 = rf(_a0, _a1)
 	} else {
 		r0 = ret.Get(0).(film.FilmID)
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(film.Film) error); ok {
-		r1 = rf(_a0)
+	if rf, ok := ret.Get(1).(func(context.Context, film.Film) error); ok {
+		r1 = rf(_a0, _a1)
 	} else {
 		r1 = ret.Error(1)
 	}

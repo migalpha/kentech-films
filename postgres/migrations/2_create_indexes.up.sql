@@ -1,0 +1,1 @@
+create UNIQUE index favourites_unique_film_id_user_id_idx ON favourites(film_id, user_id);

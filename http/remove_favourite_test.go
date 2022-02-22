@@ -26,10 +26,10 @@ func Test_RemoveFavouriteHandler_ServeHTTP(t *testing.T) {
 
 	t.Run("Happy path", func(t *testing.T) {
 		mockProvider := mocks.FilmProvider{}
-		mockProvider.On("FilmbyID", mock.Anything).Return(filmMock, nil)
+		mockProvider.On("FilmbyID", mock.Anything, mock.Anything).Return(filmMock, nil)
 		mockDestroyer := mocks.FavouriteDestroyer{}
-		mockDestroyer.On("Destroy", mock.Anything, mock.Anything).Return(nil)
-		handler := RemoveFavoriteHandler{Provider: &mockProvider, Destroyer: &mockDestroyer}
+		mockDestroyer.On("Destroy", mock.Anything, mock.Anything, mock.Anything).Return(nil)
+		handler := RemoveFavouriteHandler{Provider: &mockProvider, Destroyer: &mockDestroyer}
 
 		url := "/favourites/:id"
 

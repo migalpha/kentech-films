@@ -3,6 +3,8 @@
 package mocks
 
 import (
+	context "context"
+
 	film "github.com/migalpha/kentech-films"
 	mock "github.com/stretchr/testify/mock"
 )
@@ -12,20 +14,20 @@ type FilmProvider struct {
 	mock.Mock
 }
 
-// FilmbyID provides a mock function with given fields: _a0
-func (_m *FilmProvider) FilmbyID(_a0 film.FilmID) (film.Film, error) {
-	ret := _m.Called(_a0)
+// FilmbyID provides a mock function with given fields: _a0, _a1
+func (_m *FilmProvider) FilmbyID(_a0 context.Context, _a1 film.FilmID) (film.Film, error) {
+	ret := _m.Called(_a0, _a1)
 
 	var r0 film.Film
-	if rf, ok := ret.Get(0).(func(film.FilmID) film.Film); ok {
-		r0 = rf(_a0)
+	if rf, ok := ret.Get(0).(func(context.Context, film.FilmID) film.Film); ok {
+		r0 = rf(_a0, _a1)
 	} else {
 		r0 = ret.Get(0).(film.Film)
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(film.FilmID) error); ok {
-		r1 = rf(_a0)
+	if rf, ok := ret.Get(1).(func(context.Context, film.FilmID) error); ok {
+		r1 = rf(_a0, _a1)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -33,20 +35,20 @@ func (_m *FilmProvider) FilmbyID(_a0 film.FilmID) (film.Film, error) {
 	return r0, r1
 }
 
-// GetFilms provides a mock function with given fields: _a0
-func (_m *FilmProvider) GetFilms(_a0 map[string]interface{}) (film.Films, error) {
-	ret := _m.Called(_a0)
+// GetFilms provides a mock function with given fields: _a0, _a1
+func (_m *FilmProvider) GetFilms(_a0 context.Context, _a1 map[string]interface{}) (film.Films, error) {
+	ret := _m.Called(_a0, _a1)
 
 	var r0 film.Films
-	if rf, ok := ret.Get(0).(func(map[string]interface{}) film.Films); ok {
-		r0 = rf(_a0)
+	if rf, ok := ret.Get(0).(func(context.Context, map[string]interface{}) film.Films); ok {
+		r0 = rf(_a0, _a1)
 	} else {
 		r0 = ret.Get(0).(film.Films)
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(map[string]interface{}) error); ok {
-		r1 = rf(_a0)
+	if rf, ok := ret.Get(1).(func(context.Context, map[string]interface{}) error); ok {
+		r1 = rf(_a0, _a1)
 	} else {
 		r1 = ret.Error(1)
 	}

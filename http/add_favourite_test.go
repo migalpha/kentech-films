@@ -31,9 +31,9 @@ func Test_AddFavouriteHandler_ServeHTTP(t *testing.T) {
 
 	t.Run("Happy path", func(t *testing.T) {
 		mockProvider := mocks.FilmProvider{}
-		mockProvider.On("FilmbyID", mock.Anything).Return(filmMock, nil)
+		mockProvider.On("FilmbyID", mock.Anything, mock.Anything).Return(filmMock, nil)
 		mockSaver := mocks.FavouriteSaver{}
-		mockSaver.On("Save", mock.Anything).Return(favouriteMock.ID, nil)
+		mockSaver.On("Save", mock.Anything, mock.Anything).Return(favouriteMock.ID, nil)
 		handler := AddFavouriteHandler{Provider: &mockProvider, Saver: &mockSaver}
 
 		url := "/favourites"

@@ -24,6 +24,7 @@ type GetFilmsHandler struct {
 // @Failure 500 {object} errorResponse "error 500"
 // @Router /films [get]
 func (handler GetFilmsHandler) ServeHTTP(ctx *gin.Context) {
+	reqctx := ctx.Request.Context()
 	criteria := []string{"genre", "release_year", "title"}
 	filters := make(map[string]interface{})
 
@@ -33,7 +34,7 @@ func (handler GetFilmsHandler) ServeHTTP(ctx *gin.Context) {
 		}
 	}
 
-	films, err := handler.Repo.GetFilms(filters)
+	films, err := handler.Repo.GetFilms(reqctx, filters)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

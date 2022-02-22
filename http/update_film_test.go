@@ -27,9 +27,9 @@ func Test_UpdateFilmHandler_ServeHTTP(t *testing.T) {
 
 	t.Run("Happy path", func(t *testing.T) {
 		mockProvider := mocks.FilmProvider{}
-		mockProvider.On("FilmbyID", mock.Anything).Return(filmMock, nil)
+		mockProvider.On("FilmbyID", mock.Anything, mock.Anything).Return(filmMock, nil)
 		mockUpdater := mocks.FilmUpdater{}
-		mockUpdater.On("Update", mock.Anything).Return(nil)
+		mockUpdater.On("Update", mock.Anything, mock.Anything).Return(nil)
 		handler := UpdateFilmHandler{Provider: &mockProvider, Updater: &mockUpdater}
 
 		url := "/films/:id"

@@ -32,15 +32,13 @@ func setupServer(app application) *http.Server {
 		gin.Recovery(),
 	)
 
+	//Loading repos
+	favouriteRepo := postgres.NewFavouriteRepository(app.postgres)
+	filmRepo := postgres.NewFilmRepository(app.postgres)
+	logoutRepo := redis.NewTokenRepository(app.redis)
+	userRepo := postgres.NewUserRepository(app.postgres)
+
 	// Users endpoints
-	userRepo := postgres.UsersRepo{
-		DB: app.postgres,
-	}
-
-	logoutRepo := redis.TokenRepo{
-		DB: app.redis,
-	}
-
 	handlerRegisterUser := handler.RegisterUserHandler{Repo: userRepo}
 	router.POST("register", handlerRegisterUser.ServeHTTP)
 
@@ -51,10 +49,6 @@ func setupServer(app application) *http.Server {
 	v1.Use(middleware.CheckJWT(logoutRepo))
 
 	// Films endpoints
-	filmRepo := postgres.FilmRepo{
-		DB: app.postgres,
-	}
-
 	handlerCreateFilm := handler.CreateFilmHandler{Repo: filmRepo}
 	v1.POST("films", handlerCreateFilm.ServeHTTP)
 
@@ -80,14 +74,10 @@ func setupServer(app application) *http.Server {
 	v1.POST("csv/films", handlerImportCSV.ServeHTTP)
 
 	// Favourites
-	favoriteRepo := postgres.FavouriteRepo{
-		DB: app.postgres,
-	}
-
-	handlerAddFavourite := handler.AddFavouriteHandler{Saver: favoriteRepo, Provider: filmRepo}
+	handlerAddFavourite := handler.AddFavouriteHandler{Saver: favouriteRepo, Provider: filmRepo}
 	v1.POST("favourites", handlerAddFavourite.ServeHTTP)
 
-	handlerRemoveFavourite := handler.RemoveFavoriteHandler{Destroyer: favoriteRepo, Provider: filmRepo}
+	handlerRemoveFavourite := handler.RemoveFavouriteHandler{Destroyer: favouriteRepo, Provider: filmRepo}
 	v1.DELETE("favourites/:id", handlerRemoveFavourite.ServeHTTP)
 
 	// Logout
@@ -99,7 +89,7 @@ func setupServer(app application) *http.Server {
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	log.Printf("Server listen in %s:%s", config.Commons().Host, config.Commons().Port)
+	log.Printf("Server listen in %s", config.HTTP().Address)
 	return &http.Server{
 		Addr:              config.HTTP().Address,
 		Handler:           router,

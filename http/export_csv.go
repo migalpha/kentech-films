@@ -24,7 +24,8 @@ type ExportCSVHandler struct {
 // @Failure 500 {object} errorResponse "error 500"
 // @Router /csv/films [get]
 func (handler ExportCSVHandler) ServeHTTP(ctx *gin.Context) {
-	films, err := handler.Repo.GetFilms(map[string]interface{}{})
+	reqctx := ctx.Request.Context()
+	films, err := handler.Repo.GetFilms(reqctx, map[string]interface{}{})
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

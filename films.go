@@ -1,6 +1,7 @@
 package film
 
 import (
+	"context"
 	"fmt"
 	"strconv"
 )
@@ -36,21 +37,21 @@ func NewFilmID(id string) (FilmID, error) {
 
 //go:generate mockery --name FilmProvider
 type FilmProvider interface {
-	FilmbyID(FilmID) (Film, error)
-	GetFilms(map[string]interface{}) (Films, error)
+	FilmbyID(context.Context, FilmID) (Film, error)
+	GetFilms(context.Context, map[string]interface{}) (Films, error)
 }
 
 //go:generate mockery --name FilmSaver
 type FilmSaver interface {
-	Save(Film) (FilmID, error)
+	Save(context.Context, Film) (FilmID, error)
 }
 
 //go:generate mockery --name FilmUpdater
 type FilmUpdater interface {
-	Update(Film) error
+	Update(context.Context, Film) error
 }
 
 //go:generate mockery --name FilmDestroyer
 type FilmDestroyer interface {
-	Destroy(FilmID) error
+	Destroy(context.Context, FilmID) error
 }

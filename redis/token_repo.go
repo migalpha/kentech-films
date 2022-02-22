@@ -16,6 +16,10 @@ type TokenRepo struct {
 	DB *redis.Client
 }
 
+func NewTokenRepository(redis *redis.Client) *TokenRepo {
+	return &TokenRepo{DB: redis}
+}
+
 func (repo TokenRepo) IsTokenBlacklisted(ctx context.Context, key string) (bool, error) {
 	_, err := repo.DB.Get(ctx, key).Result()
 	if err == redis.Nil {
