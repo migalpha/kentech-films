@@ -22,4 +22,4 @@ jobs:
       run: go build -v ./cmd/kentech-films
 
     - name: Test
-      run: go test -v -race -tags musl
+      run: go test ./... -v -race -tags musl
