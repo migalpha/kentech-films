@@ -2,7 +2,7 @@ package film
 
 import "context"
 
-//go:generate mockery --name TokensSaver
+//go:generate mockery --name TokenSaver
 type TokenSaver interface {
 	Save(context.Context, string) error
 }

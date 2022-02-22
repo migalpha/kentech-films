@@ -9,13 +9,6 @@ import (
 	"time"
 )
 
-// @title Kentech-Films
-// @version 1.0.0
-// @description This API provides endpoints to manage films.
-// @description [Read me](https://github.com/migalpha/kentech-films)
-// @schemes http
-// @host localhost:8080
-// @BasePath /api/films
 func main() {
 	// The first defered call is the last to be executed
 	// os.Exit terminates the program

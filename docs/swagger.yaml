@@ -1,0 +1,495 @@
+basePath: /api/v1
+definitions:
+  film.Film:
+    properties:
+      created_by:
+        type: integer
+      director:
+        type: string
+      genre:
+        type: string
+      id:
+        type: integer
+      release_year:
+        type: integer
+      starring:
+        type: string
+      sypnosis:
+        type: string
+      title:
+        type: string
+    type: object
+  http.addFavouriteRequest:
+    properties:
+      film_id:
+        example: 1
+        type: integer
+    type: object
+  http.addFavouriteResponse:
+    properties:
+      film_id:
+        example: 2
+        type: integer
+      id:
+        example: 1
+        type: integer
+      user_id:
+        example: 7
+        type: integer
+    type: object
+  http.createFilmRequest:
+    properties:
+      created_by:
+        type: integer
+      director:
+        example: Quentin Tarantino
+        maxLength: 255
+        type: string
+      genre:
+        example: action, comedy, war
+        maxLength: 255
+        type: string
+      release_year:
+        example: 2009
+        type: integer
+      starring:
+        example: Brad Pitt, Christoph Waltz, Michael Fassbender
+        maxLength: 255
+        type: string
+      sypnosis:
+        type: string
+      title:
+        example: Inglourious Basterds
+        maxLength: 255
+        type: string
+    required:
+    - director
+    - genre
+    - release_year
+    - starring
+    - title
+    type: object
+  http.createFilmResponse:
+    properties:
+      created_by:
+        type: integer
+      director:
+        type: string
+      genre:
+        type: string
+      id:
+        type: integer
+      release_year:
+        type: integer
+      starring:
+        type: string
+      sypnosis:
+        type: string
+      title:
+        type: string
+    type: object
+  http.emptyResponse:
+    type: object
+  http.errorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  http.loginRequest:
+    properties:
+      password:
+        example: secret
+        maxLength: 75
+        minLength: 5
+        type: string
+      username:
+        example: user21
+        maxLength: 75
+        minLength: 5
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  http.loginResponse:
+    properties:
+      token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+        type: string
+    type: object
+  http.registerResponse:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      is_active:
+        type: boolean
+      username:
+        type: string
+    type: object
+  http.registerUserRequest:
+    properties:
+      password:
+        example: secret
+        maxLength: 75
+        minLength: 5
+        type: string
+      username:
+        example: user21
+        maxLength: 75
+        minLength: 5
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  http.updateFilmRequest:
+    properties:
+      director:
+        example: Quentin Tarantino
+        maxLength: 255
+        type: string
+      genre:
+        example: action, comedy, war
+        maxLength: 255
+        type: string
+      release_year:
+        example: 2009
+        type: integer
+      starring:
+        example: Brad Pitt, Christoph Waltz, Michael Fassbender
+        maxLength: 255
+        type: string
+      sypnosis:
+        type: string
+      title:
+        example: Inglourious Basterds
+        maxLength: 255
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: |-
+    This API provides endpoints to manage films and register users.
+    [Read me](https://github.com/migalpha/kentech-films)
+  termsOfService: http://swagger.io/terms/
+  title: Kentech-Films
+  version: 1.0.0
+paths:
+  /csv/films:
+    get:
+      consumes:
+      - application/json
+      description: Export all films data to csv file.
+      produces:
+      - application/json
+      responses:
+        "500":
+          description: error 500
+          schema:
+            $ref: '#/definitions/http.errorResponse'
+      summary: Export all films data to csv file.
+      tags:
+      - Films
+    post:
+      consumes:
+      - application/json
+      description: Import films data from csv file.
+      produces:
+      - application/json
+      responses:
+        "500":
+          description: error 500
+          schema:
+            $ref: '#/definitions/http.errorResponse'
+      summary: Import films data from csv file.
+      tags:
+      - Films
+  /favourites:
+    post:
+      consumes:
+      - application/json
+      description: Allow to add a film to favourites list.
+      parameters:
+      - description: Add favourites
+        in: body
+        name: film_id
+        required: true
+        schema:
+          $ref: '#/definitions/http.addFavouriteRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Returns object with favourite pk, film_id and user_id
+          schema:
+            $ref: '#/definitions/http.addFavouriteResponse'
+        "400":
+          description: error 400
+          schema:
+            $ref: '#/definitions/http.errorResponse'
+        "500":
+          description: error 500
+          schema:
+            $ref: '#/definitions/http.errorResponse'
+      summary: Add film to favourites
+      tags:
+      - Favourites
+  /favourites/{film_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Allow to remove a film from favourites list.
+      parameters:
+      - description: Remove favourites
+        in: path
+        name: film_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/http.emptyResponse'
+        "400":
+          description: error 400
+          schema:
+            $ref: '#/definitions/http.errorResponse'
+        "500":
+          description: error 500
+          schema:
+            $ref: '#/definitions/http.errorResponse'
+      summary: Remove a film from favourites
+      tags:
+      - Favourites
+  /films:
+    get:
+      consumes:
+      - application/json
+      description: Allow to get all films by some filters.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Returns films
+          schema:
+            items:
+              $ref: '#/definitions/film.Film'
+            type: array
+        "400":
+          description: error 400
+          schema:
+            $ref: '#/definitions/http.errorResponse'
+        "500":
+          description: error 500
+          schema:
+            $ref: '#/definitions/http.errorResponse'
+      summary: Get all films.
+      tags:
+      - Films
+    post:
+      consumes:
+      - application/json
+      description: Allow to register a new film .
+      parameters:
+      - description: create film
+        in: body
+        name: film
+        required: true
+        schema:
+          $ref: '#/definitions/http.createFilmRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/http.createFilmResponse'
+        "400":
+          description: error 400
+          schema:
+            $ref: '#/definitions/http.errorResponse'
+        "500":
+          description: error 500
+          schema:
+            $ref: '#/definitions/http.errorResponse'
+      summary: Create a new film.
+      tags:
+      - Films
+  /films/{film_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Allow to remove a film from records.
+      parameters:
+      - description: Destroy film
+        in: path
+        name: film_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/http.emptyResponse'
+        "400":
+          description: error 400
+          schema:
+            $ref: '#/definitions/http.errorResponse'
+        "500":
+          description: error 500
+          schema:
+            $ref: '#/definitions/http.errorResponse'
+      summary: Destroy a film from records.
+      tags:
+      - Films
+    get:
+      consumes:
+      - application/json
+      description: Given a film_id returns this film.
+      parameters:
+      - description: Film id
+        in: path
+        name: film_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Returns film
+          schema:
+            $ref: '#/definitions/film.Film'
+        "400":
+          description: error 400
+          schema:
+            $ref: '#/definitions/http.errorResponse'
+        "500":
+          description: error 500
+          schema:
+            $ref: '#/definitions/http.errorResponse'
+      summary: Get a specific film.
+      tags:
+      - Films
+    patch:
+      consumes:
+      - application/json
+      description: Allow to update one or many fields of films.
+      parameters:
+      - description: film id
+        in: path
+        name: film_id
+        required: true
+        type: integer
+      - description: data to update
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/http.updateFilmRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/http.emptyResponse'
+        "400":
+          description: error 400
+          schema:
+            $ref: '#/definitions/http.errorResponse'
+        "500":
+          description: error 500
+          schema:
+            $ref: '#/definitions/http.errorResponse'
+      summary: Allow to update one or many fields of films.
+      tags:
+      - Films
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Returns a valid token if credentials are right.
+      parameters:
+      - description: username & password
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/http.loginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Returns a token
+          schema:
+            $ref: '#/definitions/http.loginResponse'
+        "400":
+          description: error 400
+          schema:
+            $ref: '#/definitions/http.errorResponse'
+        "500":
+          description: error 500
+          schema:
+            $ref: '#/definitions/http.errorResponse'
+      summary: Get valid credentials.
+      tags:
+      - Users
+  /logout:
+    post:
+      consumes:
+      - application/json
+      description: Send current token to blacklist.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/http.emptyResponse'
+        "500":
+          description: error 500
+          schema:
+            $ref: '#/definitions/http.errorResponse'
+      summary: Invalidate actual token.
+      tags:
+      - Users
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Register user inside API.
+      parameters:
+      - description: Register user
+        in: body
+        name: register
+        required: true
+        schema:
+          $ref: '#/definitions/http.registerUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/http.registerResponse'
+        "400":
+          description: error 400
+          schema:
+            $ref: '#/definitions/http.errorResponse'
+        "500":
+          description: error 500
+          schema:
+            $ref: '#/definitions/http.errorResponse'
+      summary: Allow users to register to consume this API.
+      tags:
+      - Users
+schemes:
+- http
+swagger: "2.0"

@@ -12,6 +12,18 @@ type RemoveFavoriteHandler struct {
 	Destroyer film.FavouriteDestroyer
 }
 
+// @BasePath /api/v1
+// Remove Favourite godoc
+// @Summary Remove a film from favourites
+// @Description Allow to remove a film from favourites list.
+// @Tags Favourites
+// @Accept json
+// @Produce json
+// @Param        film_id  path      int  true  "Remove favourites"
+// @Success 200 {object} emptyResponse
+// @Failure 400 {object} errorResponse "error 400"
+// @Failure 500 {object} errorResponse "error 500"
+// @Router /favourites/{film_id} [delete]
 func (handler RemoveFavoriteHandler) ServeHTTP(ctx *gin.Context) {
 	ID := ctx.Param("id")
 
@@ -44,7 +56,8 @@ func (handler RemoveFavoriteHandler) ServeHTTP(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusCreated, gin.H{
-		"distances": "resp",
-	})
+	ctx.JSON(http.StatusOK, emptyResponse{})
+}
+
+type emptyResponse struct {
 }

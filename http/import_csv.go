@@ -14,6 +14,15 @@ type ImportCSVHandler struct {
 	Repo film.FilmSaver
 }
 
+// @BasePath /api/v1
+// Import films godoc
+// @Summary Import films data from csv file.
+// @Description Import films data from csv file.
+// @Tags Films
+// @Accept json
+// @Produce json
+// @Failure 500 {object} errorResponse "error 500"
+// @Router /csv/films [post]
 func (handler ImportCSVHandler) ServeHTTP(ctx *gin.Context) {
 	form, err := ctx.MultipartForm()
 	if err != nil {

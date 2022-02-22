@@ -7,7 +7,7 @@ import (
 	film "github.com/migalpha/kentech-films"
 )
 
-type UpdateFilmRequest struct {
+type updateFilmRequest struct {
 	Starring    string `json:"starring,omitempty" binding:"max=255" example:"Brad Pitt, Christoph Waltz, Michael Fassbender"`
 	Director    string `json:"director,omitempty" binding:"max=255" example:"Quentin Tarantino"`
 	Genre       string `json:"genre,omitempty" binding:"max=255" example:"action, comedy, war"`
@@ -21,8 +21,21 @@ type UpdateFilmHandler struct {
 	Updater  film.FilmUpdater
 }
 
+// @BasePath /api/v1
+// Update films godoc
+// @Summary Allow to update one or many fields of films.
+// @Description Allow to update one or many fields of films.
+// @Tags Films
+// @Accept json
+// @Produce json
+// @Param        film_id  path      int  true  "film id"
+// @Param        data  body      updateFilmRequest  true  "data to update"
+// @Success 200 {object} emptyResponse
+// @Failure 400 {object} errorResponse "error 400"
+// @Failure 500 {object} errorResponse "error 500"
+// @Router /films/{film_id} [patch]
 func (handler UpdateFilmHandler) ServeHTTP(ctx *gin.Context) {
-	body := UpdateFilmRequest{}
+	body := updateFilmRequest{}
 	if err := ctx.ShouldBindJSON(&body); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -66,7 +79,5 @@ func (handler UpdateFilmHandler) ServeHTTP(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusCreated, gin.H{
-		"distances": "resp",
-	})
+	ctx.JSON(http.StatusOK, gin.H{})
 }

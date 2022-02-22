@@ -12,12 +12,12 @@ func (id FavouriteID) Uint() uint {
 	return uint(id)
 }
 
-//go:generate mockery --name FavouritesSaver
+//go:generate mockery --name FavouriteSaver
 type FavouriteSaver interface {
-	Save(Favourite) error
+	Save(Favourite) (FavouriteID, error)
 }
 
-//go:generate mockery --name FavouritesDestroyer
+//go:generate mockery --name FavouriteDestroyer
 type FavouriteDestroyer interface {
 	Destroy(FilmID, UserID) error
 }

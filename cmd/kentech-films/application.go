@@ -15,19 +15,12 @@ import (
 )
 
 type application struct {
-	// tracer metrics.Tracer
-
 	redis    *redis.Client
 	postgres *gorm.DB
 }
 
 func (app *application) setupDependencies() (err error) {
 	config.Initialize()
-
-	// err = app.setupTracer()
-	// if err != nil {
-	// 	return fmt.Errorf("can't setup tracer: %w", err)
-	// }
 
 	err = app.setupPostgres()
 	if err != nil {

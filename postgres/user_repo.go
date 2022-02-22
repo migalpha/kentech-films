@@ -41,10 +41,13 @@ func (repo UsersRepo) UserByID(id film.UserID) (film.User, error) {
 	return user, nil
 }
 
-func (repo UsersRepo) Save(user film.User) error {
+func (repo UsersRepo) Save(user film.User) (film.UserID, error) {
 	data := encodeUser(user)
 	result := repo.DB.Create(&data)
-	return result.Error
+	if result.Error != nil {
+		return 0, fmt.Errorf("[UsersRepo:Save][err:%w]", result.Error)
+	}
+	return film.UserID(data.ID), nil
 }
 
 type PostgresUser struct {

@@ -12,6 +12,18 @@ type DeleteFilmHandler struct {
 	Destroyer film.FilmDestroyer
 }
 
+// @BasePath /api/v1
+// Delete Film godoc
+// @Summary Destroy a film from records.
+// @Description Allow to remove a film from records.
+// @Tags Films
+// @Accept json
+// @Produce json
+// @Param        film_id  path      int  true  "Destroy film"
+// @Success 200 {object} emptyResponse
+// @Failure 400 {object} errorResponse "error 400"
+// @Failure 500 {object} errorResponse "error 500"
+// @Router /films/{film_id} [delete]
 func (handler DeleteFilmHandler) ServeHTTP(ctx *gin.Context) {
 	ID := ctx.Param("id")
 
@@ -44,7 +56,7 @@ func (handler DeleteFilmHandler) ServeHTTP(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusNoContent, gin.H{})
+	ctx.JSON(http.StatusOK, gin.H{})
 }
 
 func getUserIDFromRequest(ctx *gin.Context) (uint, error) {

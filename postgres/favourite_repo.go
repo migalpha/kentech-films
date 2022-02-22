@@ -1,6 +1,8 @@
 package postgres
 
 import (
+	"fmt"
+
 	film "github.com/migalpha/kentech-films"
 	"gorm.io/gorm"
 )
@@ -9,10 +11,13 @@ type FavouriteRepo struct {
 	DB *gorm.DB
 }
 
-func (repo FavouriteRepo) Save(data film.Favourite) error {
+func (repo FavouriteRepo) Save(data film.Favourite) (film.FavouriteID, error) {
 	favouriteData := encodeFavourite(data)
 	result := repo.DB.Create(&favouriteData)
-	return result.Error
+	if result.Error != nil {
+		return 0, fmt.Errorf("[FavouriteRepo:Save][err:%w]", result.Error)
+	}
+	return film.FavouriteID(favouriteData.ID), nil
 }
 
 func (repo FavouriteRepo) Destroy(filmID film.FilmID, userID film.UserID) error {

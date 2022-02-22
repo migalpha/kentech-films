@@ -14,6 +14,15 @@ type ExportCSVHandler struct {
 	Repo film.FilmProvider
 }
 
+// @BasePath /api/v1
+// Export films godoc
+// @Summary Export all films data to csv file.
+// @Description Export all films data to csv file.
+// @Tags Films
+// @Accept json
+// @Produce json
+// @Failure 500 {object} errorResponse "error 500"
+// @Router /csv/films [get]
 func (handler ExportCSVHandler) ServeHTTP(ctx *gin.Context) {
 	films, err := handler.Repo.GetFilms(map[string]interface{}{})
 	if err != nil {

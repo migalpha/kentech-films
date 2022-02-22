@@ -13,10 +13,13 @@ type FilmRepo struct {
 	DB *gorm.DB
 }
 
-func (repo FilmRepo) Save(data film.Film) error {
-	FilmData := encodeFilm(data)
-	result := repo.DB.Create(&FilmData)
-	return result.Error
+func (repo FilmRepo) Save(data film.Film) (film.FilmID, error) {
+	filmData := encodeFilm(data)
+	result := repo.DB.Create(&filmData)
+	if result.Error != nil {
+		return 0, fmt.Errorf("[FilmRepo:Save][err:%w]", result.Error)
+	}
+	return film.FilmID(filmData.ID), nil
 }
 
 func (repo FilmRepo) Destroy(ID film.FilmID) error {
@@ -49,6 +52,7 @@ func (repo FilmRepo) GetFilms(filter map[string]interface{}) (film.Films, error)
 	}
 
 	var films film.Films
+	films.Films = []film.Film{}
 	for _, f := range filmsDB {
 		decodeFilm, err := repo.decodeFilm(f)
 		if err != nil {
@@ -56,6 +60,7 @@ func (repo FilmRepo) GetFilms(filter map[string]interface{}) (film.Films, error)
 		}
 		films.Films = append(films.Films, decodeFilm)
 	}
+
 	return films, nil
 }
 

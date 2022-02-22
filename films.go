@@ -42,7 +42,7 @@ type FilmProvider interface {
 
 //go:generate mockery --name FilmSaver
 type FilmSaver interface {
-	Save(Film) error
+	Save(Film) (FilmID, error)
 }
 
 //go:generate mockery --name FilmUpdater

@@ -29,5 +29,5 @@ type UserProvider interface {
 
 //go:generate mockery --name UserSaver
 type UserSaver interface {
-	Save(User) error
+	Save(User) (UserID, error)
 }

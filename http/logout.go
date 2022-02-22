@@ -13,6 +13,16 @@ type LogoutHandler struct {
 	Repo film.TokenSaver
 }
 
+// @BasePath /api/v1
+// Logout godoc
+// @Summary Invalidate actual token.
+// @Description Send current token to blacklist.
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Success 200 {object} emptyResponse
+// @Failure 500 {object} errorResponse "error 500"
+// @Router /logout [post]
 func (handler LogoutHandler) ServeHTTP(ctx *gin.Context) {
 	reqctx := ctx.Request.Context()
 	headerToken := ctx.Request.Header["Authorization"]
@@ -24,7 +34,5 @@ func (handler LogoutHandler) ServeHTTP(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{
-		"signature": signature,
-	})
+	ctx.JSON(http.StatusOK, gin.H{})
 }

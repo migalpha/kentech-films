@@ -23,6 +23,18 @@ type loginResponse struct {
 	Token string `jaon:"token" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"`
 }
 
+// @BasePath /api/v1
+// Login godoc
+// @Summary Get valid credentials.
+// @Description Returns a valid token if credentials are right.
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Param        login  body      loginRequest  true  "username & password"
+// @Success 200 {object} loginResponse "Returns a token"
+// @Failure 400 {object} errorResponse "error 400"
+// @Failure 500 {object} errorResponse "error 500"
+// @Router /login [post]
 func (handler LoginHandler) ServeHTTP(ctx *gin.Context) {
 	body := loginRequest{}
 	if err := ctx.ShouldBindJSON(&body); err != nil {
