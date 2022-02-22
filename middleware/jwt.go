@@ -20,7 +20,7 @@ func CheckJWT(repo film.TokenProvider) gin.HandlerFunc {
 		rToken := c.Request.Header["Authorization"]
 
 		if len(rToken) < 1 {
-			errorJWT = film.ErrorMissingToken
+			errorJWT = film.ErrMissingToken
 		} else {
 			token = rToken[0]
 			splitToken := strings.Split(token, "Bearer")
@@ -28,10 +28,10 @@ func CheckJWT(repo film.TokenProvider) gin.HandlerFunc {
 
 			claims, err := jwt.ParseToken(token)
 			if err != nil {
-				errorJWT = film.ErrorAuthCheckTokenFail
+				errorJWT = film.ErrAuthCheckTokenFail
 			} else {
 				if time.Now().Unix() > claims.ExpiresAt {
-					errorJWT = film.ErrorAuthCheckTokenTimeout
+					errorJWT = film.ErrAuthCheckTokenTimeout
 				} else {
 					c.Set("user_id", claims.ID)
 				}
