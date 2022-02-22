@@ -4,6 +4,17 @@ API  allow to registered users manage films. This API was created as solution fo
 
 ## Architecture ##
 
+This solution uses three components:
+
+ 1. API built using gin-gonic framework.
+ 2. PostgreSQL database to persist films and users data.
+ 3. A redis layer for blacklisted JWT.
+
+![kentech-films architecture](https://github.com/migalpha/kentech-films/blob/main/images/kentech-films-architecture.png)
+
+ER Model
+
+![ER Model](https://github.com/migalpha/kentech-films/blob/main/images/kentech-films-architecture.png)
 ## How do I get set up? ##
 
 * Summary of set up
@@ -55,3 +66,5 @@ docker-compose run --rm test
 ## Swagger ##
 
 Swagger documentation will be served in `http://localhost:8000/swagger/index.html#/` or `http://localhost:8080/swagger/index.html#/` depends in how you ran the API.
+
+![enter image description here](https://github.com/migalpha/kentech-films/blob/main/images/swagger.png)
