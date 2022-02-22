@@ -14,7 +14,7 @@ This solution uses three components:
 
 ER Model
 
-![ER Model](https://github.com/migalpha/kentech-films/blob/main/images/kentech-films-architecture.png)
+![ER Model](https://github.com/migalpha/kentech-films/blob/main/images/kentech-films-ER-model.png)
 ## How do I get set up? ##
 
 * Summary of set up
