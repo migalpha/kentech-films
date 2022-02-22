@@ -23,7 +23,7 @@ type GetFilmDetailsHandler struct {
 // @Success 200 {object} film.Film "Returns film"
 // @Failure 400 {object} errorResponse "error 400"
 // @Failure 500 {object} errorResponse "error 500"
-// @Router /films/{film_id} [get]
+// @Router /api/v1/films/{film_id} [get]
 func (handler GetFilmDetailsHandler) ServeHTTP(ctx *gin.Context) {
 	reqctx := ctx.Request.Context()
 	ID := ctx.Param("id")

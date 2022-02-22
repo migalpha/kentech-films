@@ -27,10 +27,12 @@ type ImportCSVHandler struct {
 // @Summary Import films data from csv file.
 // @Description Import films data from csv file.
 // @Tags Films
-// @Accept json
+// @Accept plain
 // @Produce json
+// @Success 201 {object} emptyResponse
+// @Failure 400 {object} errorResponse "error 400"
 // @Failure 500 {object} errorResponse "error 500"
-// @Router /csv/films [post]
+// @Router /api/v1/csv/films [post]
 func (handler ImportCSVHandler) ServeHTTP(ctx *gin.Context) {
 	reqctx := ctx.Request.Context()
 	form, err := ctx.MultipartForm()

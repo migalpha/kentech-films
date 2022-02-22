@@ -10,7 +10,7 @@ import (
 type createFilmRequest struct {
 	Starring    string `json:"starring" binding:"required,max=255" example:"Brad Pitt, Christoph Waltz, Michael Fassbender"`
 	Director    string `json:"director" binding:"required,max=255" example:"Quentin Tarantino"`
-	Genre       string `json:"genre" binding:"required,max=255" example:"action, comedy, war"`
+	Genre       string `json:"genre" binding:"required,max=255" example:"action"`
 	Sypnosis    string `json:"sypnosis"`
 	Title       string `json:"title" binding:"required,max=255" example:"Inglourious Basterds"`
 	ReleaseYear int    `json:"release_year" binding:"required" example:"2009"`
@@ -18,14 +18,14 @@ type createFilmRequest struct {
 }
 
 type createFilmResponse struct {
-	ID          uint   `json:"id"`
-	Starring    string `json:"starring"`
-	Director    string `json:"director"`
-	Genre       string `json:"genre"`
+	ID          uint   `json:"id" example:"1"`
+	Starring    string `json:"starring" example:"Brad Pitt, Christoph Waltz, Michael Fassbender"`
+	Director    string `json:"director" example:"Quentin Tarantino"`
+	Genre       string `json:"genre" example:"action"`
 	Sypnosis    string `json:"sypnosis"`
-	Title       string `json:"title"`
-	ReleaseYear int    `json:"release_year"`
-	CreatedBy   uint   `json:"created_by"`
+	Title       string `json:"title" example:"Inglourious Basterds"`
+	ReleaseYear int    `json:"release_year" example:"2009"`
+	CreatedBy   uint   `json:"created_by" example:"1"`
 }
 
 type CreateFilmHandler struct {
@@ -40,10 +40,10 @@ type CreateFilmHandler struct {
 // @Accept json
 // @Produce json
 // @Param        film  body      createFilmRequest  true  "create film"
-// @Success 200 {object} createFilmResponse
+// @Success 201 {object} createFilmResponse
 // @Failure 400 {object} errorResponse "error 400"
 // @Failure 500 {object} errorResponse "error 500"
-// @Router /films [post]
+// @Router /api/v1/films [post]
 func (handler CreateFilmHandler) ServeHTTP(ctx *gin.Context) {
 	reqctx := ctx.Request.Context()
 	body := createFilmRequest{}

@@ -22,8 +22,9 @@ type DeleteFilmHandler struct {
 // @Param        film_id  path      int  true  "Destroy film"
 // @Success 200 {object} emptyResponse
 // @Failure 400 {object} errorResponse "error 400"
+// @Failure 403 string film.ErrUserForbiddenDestroy.Err() "error 403"
 // @Failure 500 {object} errorResponse "error 500"
-// @Router /films/{film_id} [delete]
+// @Router /api/v1/films/{film_id} [delete]
 func (handler DeleteFilmHandler) ServeHTTP(ctx *gin.Context) {
 	reqctx := ctx.Request.Context()
 	ID := ctx.Param("id")

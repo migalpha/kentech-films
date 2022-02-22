@@ -17,20 +17,26 @@ const docTemplate_swagger = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/csv/films": {
+        "/api/v1/csv/films": {
             "get": {
                 "description": "Export all films data to csv file.",
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
-                    "application/json"
+                    "text/plain"
                 ],
                 "tags": [
                     "Films"
                 ],
                 "summary": "Export all films data to csv file.",
                 "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/http.emptyResponse"
+                        }
+                    },
                     "500": {
                         "description": "error 500",
                         "schema": {
@@ -42,7 +48,7 @@ const docTemplate_swagger = `{
             "post": {
                 "description": "Import films data from csv file.",
                 "consumes": [
-                    "application/json"
+                    "text/plain"
                 ],
                 "produces": [
                     "application/json"
@@ -52,6 +58,18 @@ const docTemplate_swagger = `{
                 ],
                 "summary": "Import films data from csv file.",
                 "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/http.emptyResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "error 400",
+                        "schema": {
+                            "$ref": "#/definitions/http.errorResponse"
+                        }
+                    },
                     "500": {
                         "description": "error 500",
                         "schema": {
@@ -61,7 +79,7 @@ const docTemplate_swagger = `{
                 }
             }
         },
-        "/favourites": {
+        "/api/v1/favourites": {
             "post": {
                 "description": "Allow to add a film to favourites list.",
                 "consumes": [
@@ -86,7 +104,7 @@ const docTemplate_swagger = `{
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "201": {
                         "description": "Returns object with favourite pk, film_id and user_id",
                         "schema": {
                             "$ref": "#/definitions/http.addFavouriteResponse"
@@ -107,7 +125,7 @@ const docTemplate_swagger = `{
                 }
             }
         },
-        "/favourites/{film_id}": {
+        "/api/v1/favourites/{film_id}": {
             "delete": {
                 "description": "Allow to remove a film from favourites list.",
                 "consumes": [
@@ -151,7 +169,7 @@ const docTemplate_swagger = `{
                 }
             }
         },
-        "/films": {
+        "/api/v1/films": {
             "get": {
                 "description": "Allow to get all films by some filters.",
                 "consumes": [
@@ -164,6 +182,26 @@ const docTemplate_swagger = `{
                     "Films"
                 ],
                 "summary": "Get all films.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "film title",
+                        "name": "title",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "film genre",
+                        "name": "genre",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "film release year",
+                        "name": "release_year",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Returns films",
@@ -212,8 +250,8 @@ const docTemplate_swagger = `{
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "OK",
+                    "201": {
+                        "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/http.createFilmResponse"
                         }
@@ -233,7 +271,7 @@ const docTemplate_swagger = `{
                 }
             }
         },
-        "/films/{film_id}": {
+        "/api/v1/films/{film_id}": {
             "get": {
                 "description": "Given a film_id returns this film.",
                 "consumes": [
@@ -310,6 +348,12 @@ const docTemplate_swagger = `{
                             "$ref": "#/definitions/http.errorResponse"
                         }
                     },
+                    "403": {
+                        "description": "error 403",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     "500": {
                         "description": "error 500",
                         "schema": {
@@ -359,6 +403,12 @@ const docTemplate_swagger = `{
                         "description": "error 400",
                         "schema": {
                             "$ref": "#/definitions/http.errorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "error 403",
+                        "schema": {
+                            "type": "string"
                         }
                     },
                     "500": {
@@ -500,25 +550,31 @@ const docTemplate_swagger = `{
                     "type": "integer"
                 },
                 "director": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Quentin Tarantino"
                 },
                 "genre": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "action"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "release_year": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 2009
                 },
                 "starring": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Brad Pitt, Christoph Waltz, Michael Fassbender"
                 },
                 "sypnosis": {
                     "type": "string"
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Inglourious Basterds"
                 }
             }
         },
@@ -569,7 +625,7 @@ const docTemplate_swagger = `{
                 "genre": {
                     "type": "string",
                     "maxLength": 255,
-                    "example": "action, comedy, war"
+                    "example": "action"
                 },
                 "release_year": {
                     "type": "integer",
@@ -594,28 +650,35 @@ const docTemplate_swagger = `{
             "type": "object",
             "properties": {
                 "created_by": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "director": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Quentin Tarantino"
                 },
                 "genre": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "action"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "release_year": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 2009
                 },
                 "starring": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Brad Pitt, Christoph Waltz, Michael Fassbender"
                 },
                 "sypnosis": {
                     "type": "string"
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Inglourious Basterds"
                 }
             }
         },
@@ -626,7 +689,8 @@ const docTemplate_swagger = `{
             "type": "object",
             "properties": {
                 "error": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "error"
                 }
             }
         },
@@ -667,13 +731,16 @@ const docTemplate_swagger = `{
                     "type": "string"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "is_active": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "example": true
                 },
                 "username": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "user21"
                 }
             }
         },
@@ -736,7 +803,7 @@ const docTemplate_swagger = `{
 // SwaggerInfo_swagger holds exported Swagger Info so clients can modify it
 var SwaggerInfo_swagger = &swag.Spec{
 	Version:          "1.0.0",
-	Host:             "localhost:8080",
+	Host:             "localhost:8000",
 	BasePath:         "/api/v1",
 	Schemes:          []string{"http"},
 	Title:            "Kentech-Films",

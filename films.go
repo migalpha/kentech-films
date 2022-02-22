@@ -7,13 +7,13 @@ import (
 )
 
 type Film struct {
-	ID          FilmID `json:"id"`
-	Starring    string `json:"starring"`
-	Director    string `json:"director"`
-	Genre       string `json:"genre"`
+	ID          FilmID `json:"id" example:"1"`
+	Starring    string `json:"starring" example:"Brad Pitt, Christoph Waltz, Michael Fassbender"`
+	Director    string `json:"director" example:"Quentin Tarantino"`
+	Genre       string `json:"genre" example:"action"`
 	Sypnosis    string `json:"sypnosis"`
-	Title       string `json:"title"`
-	ReleaseYear int    `json:"release_year"`
+	Title       string `json:"title" example:"Inglourious Basterds"`
+	ReleaseYear int    `json:"release_year" example:"2009"`
 	CreatedBy   uint   `json:"created_by"`
 }
 

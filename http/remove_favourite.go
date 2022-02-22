@@ -23,7 +23,7 @@ type RemoveFavouriteHandler struct {
 // @Success 200 {object} emptyResponse
 // @Failure 400 {object} errorResponse "error 400"
 // @Failure 500 {object} errorResponse "error 500"
-// @Router /favourites/{film_id} [delete]
+// @Router /api/v1/favourites/{film_id} [delete]
 func (handler RemoveFavouriteHandler) ServeHTTP(ctx *gin.Context) {
 	reqctx := ctx.Request.Context()
 	ID := ctx.Param("id")

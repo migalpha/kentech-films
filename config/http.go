@@ -9,7 +9,7 @@ import (
 var httpSettings HTTPSettings
 
 type HTTPSettings struct {
-	Address           string `envconfig:"SERVER_ADDRESS" default:":8080"`
+	Address           string `envconfig:"SERVER_ADDRESS" default:":8000"`
 	ReadTimeout       time.Duration
 	ReadHeaderTimeout time.Duration
 	WriteTimeout      time.Duration

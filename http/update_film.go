@@ -32,8 +32,9 @@ type UpdateFilmHandler struct {
 // @Param        data  body      updateFilmRequest  true  "data to update"
 // @Success 200 {object} emptyResponse
 // @Failure 400 {object} errorResponse "error 400"
+// @Failure 403 string ErrUserForbiddenUpdate.Err() "error 403"
 // @Failure 500 {object} errorResponse "error 500"
-// @Router /films/{film_id} [patch]
+// @Router /api/v1/films/{film_id} [patch]
 func (handler UpdateFilmHandler) ServeHTTP(ctx *gin.Context) {
 	reqctx := ctx.Request.Context()
 	body := updateFilmRequest{}

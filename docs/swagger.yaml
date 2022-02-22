@@ -5,18 +5,24 @@ definitions:
       created_by:
         type: integer
       director:
+        example: Quentin Tarantino
         type: string
       genre:
+        example: action
         type: string
       id:
+        example: 1
         type: integer
       release_year:
+        example: 2009
         type: integer
       starring:
+        example: Brad Pitt, Christoph Waltz, Michael Fassbender
         type: string
       sypnosis:
         type: string
       title:
+        example: Inglourious Basterds
         type: string
     type: object
   http.addFavouriteRequest:
@@ -46,7 +52,7 @@ definitions:
         maxLength: 255
         type: string
       genre:
-        example: action, comedy, war
+        example: action
         maxLength: 255
         type: string
       release_year:
@@ -72,20 +78,27 @@ definitions:
   http.createFilmResponse:
     properties:
       created_by:
+        example: 1
         type: integer
       director:
+        example: Quentin Tarantino
         type: string
       genre:
+        example: action
         type: string
       id:
+        example: 1
         type: integer
       release_year:
+        example: 2009
         type: integer
       starring:
+        example: Brad Pitt, Christoph Waltz, Michael Fassbender
         type: string
       sypnosis:
         type: string
       title:
+        example: Inglourious Basterds
         type: string
     type: object
   http.emptyResponse:
@@ -93,6 +106,7 @@ definitions:
   http.errorResponse:
     properties:
       error:
+        example: error
         type: string
     type: object
   http.loginRequest:
@@ -122,10 +136,13 @@ definitions:
       created_at:
         type: string
       id:
+        example: 1
         type: integer
       is_active:
+        example: true
         type: boolean
       username:
+        example: user21
         type: string
     type: object
   http.registerUserRequest:
@@ -168,7 +185,7 @@ definitions:
         maxLength: 255
         type: string
     type: object
-host: localhost:8080
+host: localhost:8000
 info:
   contact: {}
   description: |-
@@ -178,14 +195,18 @@ info:
   title: Kentech-Films
   version: 1.0.0
 paths:
-  /csv/films:
+  /api/v1/csv/films:
     get:
       consumes:
       - application/json
       description: Export all films data to csv file.
       produces:
-      - application/json
+      - text/plain
       responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/http.emptyResponse'
         "500":
           description: error 500
           schema:
@@ -195,11 +216,19 @@ paths:
       - Films
     post:
       consumes:
-      - application/json
+      - text/plain
       description: Import films data from csv file.
       produces:
       - application/json
       responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/http.emptyResponse'
+        "400":
+          description: error 400
+          schema:
+            $ref: '#/definitions/http.errorResponse'
         "500":
           description: error 500
           schema:
@@ -207,7 +236,7 @@ paths:
       summary: Import films data from csv file.
       tags:
       - Films
-  /favourites:
+  /api/v1/favourites:
     post:
       consumes:
       - application/json
@@ -222,7 +251,7 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
+        "201":
           description: Returns object with favourite pk, film_id and user_id
           schema:
             $ref: '#/definitions/http.addFavouriteResponse'
@@ -237,7 +266,7 @@ paths:
       summary: Add film to favourites
       tags:
       - Favourites
-  /favourites/{film_id}:
+  /api/v1/favourites/{film_id}:
     delete:
       consumes:
       - application/json
@@ -266,11 +295,24 @@ paths:
       summary: Remove a film from favourites
       tags:
       - Favourites
-  /films:
+  /api/v1/films:
     get:
       consumes:
       - application/json
       description: Allow to get all films by some filters.
+      parameters:
+      - description: film title
+        in: query
+        name: title
+        type: string
+      - description: film genre
+        in: query
+        name: genre
+        type: string
+      - description: film release year
+        in: query
+        name: release_year
+        type: integer
       produces:
       - application/json
       responses:
@@ -305,8 +347,8 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
           schema:
             $ref: '#/definitions/http.createFilmResponse'
         "400":
@@ -320,7 +362,7 @@ paths:
       summary: Create a new film.
       tags:
       - Films
-  /films/{film_id}:
+  /api/v1/films/{film_id}:
     delete:
       consumes:
       - application/json
@@ -342,6 +384,10 @@ paths:
           description: error 400
           schema:
             $ref: '#/definitions/http.errorResponse'
+        "403":
+          description: error 403
+          schema:
+            type: string
         "500":
           description: error 500
           schema:
@@ -404,6 +450,10 @@ paths:
           description: error 400
           schema:
             $ref: '#/definitions/http.errorResponse'
+        "403":
+          description: error 403
+          schema:
+            type: string
         "500":
           description: error 500
           schema:

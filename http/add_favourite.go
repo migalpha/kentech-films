@@ -30,10 +30,10 @@ type AddFavouriteHandler struct {
 // @Accept json
 // @Produce json
 // @Param        film_id  body      addFavouriteRequest  true  "Add favourites"
-// @Success 200 {object} addFavouriteResponse "Returns object with favourite pk, film_id and user_id"
+// @Success 201 {object} addFavouriteResponse "Returns object with favourite pk, film_id and user_id"
 // @Failure 400 {object} errorResponse "error 400"
 // @Failure 500 {object} errorResponse "error 500"
-// @Router /favourites [post]
+// @Router /api/v1/favourites [post]
 func (handler AddFavouriteHandler) ServeHTTP(ctx *gin.Context) {
 	reqctx := ctx.Request.Context()
 	body := addFavouriteRequest{}
@@ -65,7 +65,7 @@ func (handler AddFavouriteHandler) ServeHTTP(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusNoContent, gin.H{"favourite": addFavouriteResponse{
+	ctx.JSON(http.StatusCreated, gin.H{"favourite": addFavouriteResponse{
 		ID:     favouriteID.Uint(),
 		FilmID: filmID.Uint(),
 		UserID: userID,
@@ -73,5 +73,5 @@ func (handler AddFavouriteHandler) ServeHTTP(ctx *gin.Context) {
 }
 
 type errorResponse struct {
-	Error string `json:"error"`
+	Error string `json:"error" example:"error"`
 }

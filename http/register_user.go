@@ -23,9 +23,9 @@ func (ru registerUserRequest) isStartWithDigit() bool {
 }
 
 type registerResponse struct {
-	ID        uint      `json:"id"`
-	Username  string    `json:"username"`
-	IsActive  bool      `json:"is_active"`
+	ID        uint      `json:"id" example:"1"`
+	Username  string    `json:"username" example:"user21"`
+	IsActive  bool      `json:"is_active" example:"true"`
 	CreatedAt time.Time `json:"created_at"`
 }
 

@@ -49,6 +49,6 @@ func Test_AddFavouriteHandler_ServeHTTP(t *testing.T) {
 		c.Request, _ = http.NewRequest(http.MethodPost, url, bytes.NewBuffer(jsonData))
 		r.ServeHTTP(w, c.Request)
 
-		assert.Equal(t, http.StatusNoContent, w.Code)
+		assert.Equal(t, http.StatusCreated, w.Code)
 	})
 }

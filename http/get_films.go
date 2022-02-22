@@ -19,10 +19,13 @@ type GetFilmsHandler struct {
 // @Tags Films
 // @Accept json
 // @Produce json
+// @Param   title  query     string     false  "film title"
+// @Param   genre  query     string     false  "film genre"
+// @Param   release_year  query     int     false  "film release year"
 // @Success 200 {array} film.Film "Returns films"
 // @Failure 400 {object} errorResponse "error 400"
 // @Failure 500 {object} errorResponse "error 500"
-// @Router /films [get]
+// @Router /api/v1/films [get]
 func (handler GetFilmsHandler) ServeHTTP(ctx *gin.Context) {
 	reqctx := ctx.Request.Context()
 	criteria := []string{"genre", "release_year", "title"}

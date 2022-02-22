@@ -22,14 +22,15 @@ import (
 // @description [Read me](https://github.com/migalpha/kentech-films)
 // @termsOfService http://swagger.io/terms/
 // @schemes http
-// @host localhost:8080
+// @host localhost:8000
 // @BasePath /api/v1
 func setupServer(app application) *http.Server {
 	// gin.SetMode(gin.ReleaseMode)
 	router := gin.New()
 	router.Use(
-		gin.LoggerWithWriter(gin.DefaultWriter, "/api/films/health"),
+		gin.LoggerWithWriter(gin.DefaultWriter, "health"),
 		gin.Recovery(),
+		middleware.CORS(),
 	)
 
 	//Loading repos
@@ -39,13 +40,13 @@ func setupServer(app application) *http.Server {
 	userRepo := postgres.NewUserRepository(app.postgres)
 
 	// Users endpoints
+	v1 := router.Group("api/v1")
 	handlerRegisterUser := handler.RegisterUserHandler{Repo: userRepo}
-	router.POST("register", handlerRegisterUser.ServeHTTP)
+	v1.POST("register", handlerRegisterUser.ServeHTTP)
 
 	handlerLogin := handler.LoginHandler{Repo: userRepo}
-	router.POST("login", handlerLogin.ServeHTTP)
+	v1.POST("login", handlerLogin.ServeHTTP)
 
-	v1 := router.Group("api/v1")
 	v1.Use(middleware.CheckJWT(logoutRepo))
 
 	// Films endpoints

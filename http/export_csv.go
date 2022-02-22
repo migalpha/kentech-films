@@ -20,9 +20,10 @@ type ExportCSVHandler struct {
 // @Description Export all films data to csv file.
 // @Tags Films
 // @Accept json
-// @Produce json
+// @Produce plain
+// @Success 200 {object} emptyResponse
 // @Failure 500 {object} errorResponse "error 500"
-// @Router /csv/films [get]
+// @Router /api/v1/csv/films [get]
 func (handler ExportCSVHandler) ServeHTTP(ctx *gin.Context) {
 	reqctx := ctx.Request.Context()
 	films, err := handler.Repo.GetFilms(reqctx, map[string]interface{}{})

@@ -35,7 +35,7 @@ Run application
 ```
 go run application.go main.go server.go
 ```
-The API is served in `http://localhost:8080`
+The API is served in `http://localhost:8000`
 
 * How to run tests
 
@@ -65,6 +65,6 @@ docker-compose run --rm test
 
 ## Swagger ##
 
-Swagger documentation will be served in `http://localhost:8000/swagger/index.html#/` or `http://localhost:8080/swagger/index.html#/` depends in how you ran the API.
+Swagger documentation will be served in `http://localhost:8000/swagger/index.html#/`.
 
 ![enter image description here](https://github.com/migalpha/kentech-films/blob/main/images/swagger.png)
