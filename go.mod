@@ -3,6 +3,7 @@ module github.com/migalpha/kentech-films
 go 1.16
 
 require (
+	github.com/alicebob/miniredis/v2 v2.18.0
 	github.com/gin-gonic/gin v1.7.7
 	github.com/go-redis/redis/v8 v8.11.4
 	github.com/golang-jwt/jwt v3.2.2+incompatible
